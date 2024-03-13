@@ -1,0 +1,142 @@
+[
+  {
+    "userid": 15624510,
+    "gender": "Male",
+    "age": 19,
+    "estimatedsalary": 19000,
+    "purchased": 0
+  },
+  {
+    "userid": 15810944,
+    "gender": "Male",
+    "age": 35,
+    "estimatedsalary": 20000,
+    "purchased": 0
+  },
+  {
+    "userid": 15668575,
+    "gender": "Female",
+    "age": 26,
+    "estimatedsalary": 43000,
+    "purchased": 0
+  },
+  {
+    "userid": 15603246,
+    "gender": "Female",
+    "age": 27,
+    "estimatedsalary": 57000,
+    "purchased": 0
+  },
+  {
+    "userid": 15804002,
+    "gender": "Male",
+    "age": 19,
+    "estimatedsalary": 76000,
+    "purchased": 0
+  },
+  {
+    "userid": 15728773,
+    "gender": "Male",
+    "age": 27,
+    "estimatedsalary": 58000,
+    "purchased": 0
+  },
+  {
+    "userid": 15598044,
+    "gender": "Female",
+    "age": 27,
+    "estimatedsalary": 84000,
+    "purchased": 0
+  },
+  {
+    "userid": 15694829,
+    "gender": "Female",
+    "age": 32,
+    "estimatedsalary": 150000,
+    "purchased": 1
+  },
+  {
+    "userid": 15600575,
+    "gender": "Male",
+    "age": 25,
+    "estimatedsalary": 33000,
+    "purchased": 0
+  },
+  {
+    "userid": 15727311,
+    "gender": "Female",
+    "age": 35,
+    "estimatedsalary": 65000,
+    "purchased": 0
+  },
+  {
+    "userid": 15570769,
+    "gender": "Female",
+    "age": 26,
+    "estimatedsalary": 80000,
+    "purchased": 0
+  },
+  {
+    "userid": 15606274,
+    "gender": "Female",
+    "age": 26,
+    "estimatedsalary": 52000,
+    "purchased": 0
+  },
+  {
+    "userid": 15746139,
+    "gender": "Male",
+    "age": 20,
+    "estimatedsalary": 86000,
+    "purchased": 0
+  },
+  {
+    "userid": 15704987,
+    "gender": "Male",
+    "age": 32,
+    "estimatedsalary": 18000,
+    "purchased": 0
+  },
+  {
+    "userid": 15628972,
+    "gender": "Male",
+    "age": 18,
+    "estimatedsalary": 82000,
+    "purchased": 0
+  },
+  {
+    "userid": 15697686,
+    "gender": "Male",
+    "age": 29,
+    "estimatedsalary": 80000,
+    "purchased": 0
+  },
+  {
+    "userid": 15733883,
+    "gender": "Male",
+    "age": 47,
+    "estimatedsalary": 25000,
+    "purchased": 1
+  },
+  {
+    "userid": 15617482,
+    "gender": "Male",
+    "age": 45,
+    "estimatedsalary": 26000,
+    "purchased": 1
+  },
+  {
+    "userid": 15704583,
+    "gender": "Male",
+    "age": 46,
+    "estimatedsalary": 28000,
+    "purchased": 1
+  },
+  {
+    "userid": 15621083,
+    "gender": "Female",
+    "age": 48,
+    "estimatedsalary": 29000,
+    "purchased": 1
+  }
+]
