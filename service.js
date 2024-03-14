@@ -8,27 +8,36 @@ document
     var estimatedSalaryInput = document.getElementById("estimatedSalary").value;
     var valueK = document.getElementById("k").value;
 
-    if (genderInput === "Male") {
-      genderInput = 1;
-    } else {
-      genderInput = 0;
-    }
-    console.log(genderInput, ageInput, estimatedSalaryInput, valueK);
+    // melakukan normalisasi data age dan salary dari input user
+    const userData = await fetchData();
 
+    ageInput = parseFloat(ageInput);
+    estimatedSalaryInput = parseFloat(estimatedSalaryInput);
+    const maxAge = Math.max(...userData.map((user) => user.age));
+    const minAge = Math.min(...userData.map((user) => user.age));
+    const maxSalary = Math.max(...userData.map((user) => user.estimatedsalary));
+    const minSalary = Math.min(...userData.map((user) => user.estimatedsalary));
+    var normalizedAge = normalizeValue(ageInput, minAge, maxAge);
+    var normalizedSalary = normalizeValue(
+      estimatedSalaryInput,
+      minSalary,
+      maxSalary
+    );
+
+    // melihat neighbors yang didapat dari distance yang dihitung
     console.log(
       calculateEuclideanDistance(
-        genderInput,
-        ageInput,
-        estimatedSalaryInput,
+        normalizedAge,
+        normalizedSalary,
         valueK
       )
     );
 
+    // menentukan nilai purchase dan ditampilkan ke layar
     try {
       const mostFrequentPurchased = await isPurchased(
-        genderInput,
-        ageInput,
-        estimatedSalaryInput,
+        normalizedAge,
+        normalizedSalary,
         valueK
       );
       document.getElementById("resultPurchased").innerText = JSON.stringify(
@@ -39,6 +48,7 @@ document
     }
   });
 
+// menangkap data dari data json
 async function fetchData() {
   try {
     const response = await fetch("data_training.json");
@@ -52,6 +62,7 @@ async function fetchData() {
   }
 }
 
+// menampilkan data dari json
 async function displayUserData() {
   try {
     const userData = await fetchData();
@@ -77,33 +88,44 @@ async function displayUserData() {
   }
 }
 
-function transformGender(userData) {
-  var modifiedUserData = userData.map(function (user) {
-    var newUser = Object.assign({}, user);
-    if (newUser.gender === "Female") {
-      newUser.gender = 0;
-    } else if (newUser.gender === "Male") {
-      newUser.gender = 1;
-    }
-    return newUser;
-  });
+// normalisasi data dari data json
+function normalizeData(userData) {
+  const maxAge = Math.max(...userData.map((user) => user.age));
+  const minAge = Math.min(...userData.map((user) => user.age));
+  const maxEstimatedSalary = Math.max(
+    ...userData.map((user) => user.estimatedsalary)
+  );
+  const minEstimatedSalary = Math.min(
+    ...userData.map((user) => user.estimatedsalary)
+  );
 
-  return modifiedUserData;
+  const normalizedData = userData.map((user) => ({
+    ...user,
+    age: (user.age - minAge) / (maxAge - minAge),
+    estimatedsalary:
+      (user.estimatedsalary - minEstimatedSalary) /
+      (maxEstimatedSalary - minEstimatedSalary),
+  }));
+
+  return normalizedData;
 }
 
+// melakukan perubahan data
 async function fetchDataAndTransform() {
   try {
     const data = await fetchData();
-    const modifiedData = transformGender(data);
-    return modifiedData;
+    const normalizedData = normalizeData(data);
+    return normalizedData;
   } catch (error) {
     console.error("Error fetching and transforming data:", error);
     return null;
   }
 }
 
+// menghitung distance, tidak menggunakan gender dalam perhitungan dikarenakan ketika gender diubah menjadi numerik dengan
+// nilai Female = 0 dan Male = 1 akan mengubah hasil perhitungan distance ketika user.gender - genderInput menghasilkan 1 pangkat 2
+// maka akan menambahkan 1 pada angka di dalam akar
 async function calculateEuclideanDistance(
-  genderInput,
   ageInput,
   estimatedSalaryInput,
   valueK
@@ -113,13 +135,14 @@ async function calculateEuclideanDistance(
 
     var euclideanDistances = data.map(function (user) {
       var distance = Math.sqrt(
-        Math.pow(user.gender - genderInput, 2) +
           Math.pow(user.age - ageInput, 2) +
           Math.pow(user.estimatedsalary - estimatedSalaryInput, 2)
       );
       return {
         userId: user.userid,
         distance: distance,
+        age: user.age,
+        estimatedsalary: user.estimatedsalary,
         purchased: user.purchased,
       };
     });
@@ -135,45 +158,48 @@ async function calculateEuclideanDistance(
   }
 }
 
+// menentukan nilai dari atribut purchase
 async function isPurchased(
-  genderInput,
   ageInput,
   estimatedSalaryInput,
   valueK
 ) {
   try {
     const topKDistances = await calculateEuclideanDistance(
-      genderInput,
       ageInput,
       estimatedSalaryInput,
       valueK
     );
 
+    for (const { purchased, distance } of topKDistances) {
+      if (distance === 0) {
+        return purchased;
+      }
+    }
+
     var countPurchasedOne = 0;
     var countPurchasedZero = 0;
-    var purchased = 0;
 
-    topKDistances.forEach(({ purchased, distance }) => {
-      if (distance === 0) {
-        purchased = 1;
-        return purchased;
-      } else if (purchased === 1) {
+    for (const { purchased } of topKDistances) {
+      if (purchased === 1) {
         countPurchasedOne++;
       } else if (purchased === 0) {
         countPurchasedZero++;
       }
-    });
+    }
 
     var purchased = countPurchasedOne > countPurchasedZero ? 1 : 0;
 
     return purchased;
   } catch (error) {
-    console.error(
-      "Error calculating Euclidean distance and finding purchased:",
-      error
-    );
+    console.error("Error calculating purchased:", error);
     return null;
   }
+}
+
+// normalisasi data dari input user
+function normalizeValue(value, minValue, maxValue) {
+  return (value - minValue) / (maxValue - minValue);
 }
 
 displayUserData();
